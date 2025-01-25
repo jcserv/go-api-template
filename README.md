@@ -1,4 +1,7 @@
 # go-api-template
+
+![visitors](https://img.shields.io/endpoint?url=https://vu-mi.com/api/v1/views?id=jcserv/go-api-template)
+
 This template can be used to quickly bootstrap a Go API server
 
 ## Getting Started
