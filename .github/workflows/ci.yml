@@ -48,11 +48,8 @@ jobs:
       - name: Install dependencies
         run: go mod download
 
-      - name: Generate code
-        run: make codegen
-
       - name: Run migrations
-        run: make migrate-test
+        run: migrate -database "$(TEST_DATABASE_URL)?sslmode=disable" -path ./db/migrations up
         env:
           TEST_DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
