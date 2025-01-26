@@ -44,6 +44,13 @@ func Info(ctx context.Context, msg string) {
 	GetLogger(ctx).Info(msg)
 }
 
+func Debug(ctx context.Context, msg string) {
+	if !env.GetBool("DEBUG", false) {
+		return
+	}
+	GetLogger(ctx).Debug(msg)
+}
+
 func WithRequest(l *zap.Logger, r *http.Request) *zap.Logger {
 	userAgent := r.UserAgent()
 	os, device := parseUserAgent(userAgent)
