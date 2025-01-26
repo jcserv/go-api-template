@@ -1,8 +1,10 @@
-run/docker:
-	docker compose up -d
-
-run/local:
-	go build ./cmd/go-api-template/main.go && ./main
+.PHONY: clean dev run/docker 
 
 clean:
 	rm main
+
+dev:
+	go build ./cmd/go-api-template/main.go && ./main
+
+run/docker:
+	docker compose up -d

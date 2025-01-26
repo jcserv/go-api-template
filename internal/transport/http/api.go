@@ -1,11 +1,11 @@
-package rest
+package http
 
 import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/jcserv/go-api-template/internal/transport/rest/httputil"
-	v1 "github.com/jcserv/go-api-template/internal/transport/rest/v1"
+	"github.com/jcserv/go-api-template/internal/transport/http/httputil"
+	v1 "github.com/jcserv/go-api-template/internal/transport/http/v1"
 )
 
 const (

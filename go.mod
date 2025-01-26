@@ -1,6 +1,6 @@
 module github.com/jcserv/go-api-template
 
-go 1.21.5
+go 1.23.4
 
 require (
 	github.com/gorilla/mux v1.8.1 // indirect

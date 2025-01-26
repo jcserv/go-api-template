@@ -6,12 +6,12 @@ import (
 	"net/http"
 	"sync"
 
-	"github.com/jcserv/go-api-template/internal/transport/rest"
+	_http "github.com/jcserv/go-api-template/internal/transport/http"
 	"github.com/jcserv/go-api-template/internal/utils/log"
 )
 
 type Service struct {
-	api *rest.API
+	api *_http.API
 	cfg *Configuration
 }
 
@@ -22,7 +22,7 @@ func NewService() (*Service, error) {
 	}
 
 	s := &Service{
-		api: rest.NewAPI(),
+		api: _http.NewAPI(),
 		cfg: cfg,
 	}
 	return s, nil
