@@ -49,9 +49,9 @@ jobs:
         run: go mod download
 
       - name: Run migrations
-        run: migrate -database "$(TEST_DATABASE_URL)?sslmode=disable" -path ./db/migrations up
+        run: migrate -database "${DATABASE_URL}?sslmode=disable" -path ./db/migrations up
         env:
-          TEST_DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - name: Run tests
         run: go test ./... 
