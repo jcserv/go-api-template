@@ -4,9 +4,11 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"os"
 	"sync"
 	"time"
 
+	"github.com/gorilla/handlers"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/jcserv/go-api-template/internal/repository"
 	"github.com/jcserv/go-api-template/internal/service"
@@ -56,7 +58,25 @@ func (s *Service) Run() error {
 func (s *Service) StartHTTP(ctx context.Context) error {
 	log.Info(ctx, fmt.Sprintf("Starting HTTP server on port %s", s.cfg.HTTPPort))
 	r := s.api.RegisterRoutes()
-	http.ListenAndServe(fmt.Sprintf(":%s", s.cfg.HTTPPort), r)
+
+	headers := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
+	origins := handlers.AllowedOrigins([]string{os.Getenv("ORIGIN_ALLOWED")})
+	methods := handlers.AllowedMethods([]string{http.MethodGet, http.MethodPost, http.MethodPatch, http.MethodPut, http.MethodDelete, http.MethodOptions})
+	exposedHeaders := handlers.ExposedHeaders([]string{"X-Requested-With", "Content-Type", "X-Total-Count", "X-Token"})
+
+	srv := &http.Server{
+		Addr:    fmt.Sprintf(":%s", s.cfg.HTTPPort),
+		Handler: handlers.CORS(origins, headers, methods, exposedHeaders)(r),
+	}
+
+	go func() {
+		<-ctx.Done()
+		if err := srv.Shutdown(context.Background()); err != nil {
+			log.Error(ctx, fmt.Sprintf("Error shutting down HTTP server: %v", err))
+		}
+	}()
+
+	srv.ListenAndServe()
 	return nil
 }
 

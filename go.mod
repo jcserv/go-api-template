@@ -4,8 +4,11 @@ go 1.23.4
 
 require github.com/google/uuid v1.6.0
 
+require github.com/felixge/httpsnoop v1.0.3 // indirect
+
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/gorilla/handlers v1.5.2
 	github.com/gorilla/mux v1.8.1 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 // indirect
