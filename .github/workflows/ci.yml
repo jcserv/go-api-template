@@ -6,11 +6,12 @@ on:
       - main
   pull_request:
 
+# Ephemeral CI database — throwaway credentials, not sensitive.
 env:
-  DATABASE_URL: ${{ secrets.DATABASE_URL }}
-  POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-  POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-  POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: postgres
+  POSTGRES_DB: app
+  DATABASE_URL: postgres://postgres:postgres@localhost:5432/app
 
 jobs:
   ci:
@@ -19,9 +20,9 @@ jobs:
       postgres:
         image: postgres:16-alpine
         env:
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: app
         ports:
           - 5432:5432
         options: >-
@@ -50,8 +51,6 @@ jobs:
 
       - name: Run migrations
         run: migrate -database "${DATABASE_URL}?sslmode=disable" -path ./db/migrations up
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - name: Run tests
         run: go test ./... 
